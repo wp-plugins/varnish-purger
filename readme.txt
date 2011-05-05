@@ -1,5 +1,5 @@
-WordPress VarnishMia
-====================
+Plugins Varnish Purges
+======================
 
 Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for extensibility.
 
