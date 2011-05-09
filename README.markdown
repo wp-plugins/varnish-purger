@@ -24,6 +24,7 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `wp-varnish/` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
+3. use the vcl provided to configure your varnish instance
 
 Frequently Asked Questions 
 --------------------------
@@ -54,11 +55,20 @@ Planned in a really near future :
 ---------------------------------
   - update wordpress VCL (done commit d75458e688caa201cf353c54410b42d000f63140)
   - extension check for a warning when unsupported plugins or widget is installed.
-  - support for nextgen gallery
+  - support for nextgen gallery (done commit ee1328b078520cdde55eca84ca05bcec5befc48e)
   - wiki, especially for varnish configuration.
+
+Upgrade Notice
+--------------
+* 0.91 : deactivate v0.9 on network, then uninstall the plugins. Then install 0.91 from scratch. This is due to intense renaming to avoid conflicts with original WP-Varnish plugin.
+* 0.9: initial release, deactivate WP-Varnish
 
 Changelog
 ---------
+### 0.91 
+* rename classes, files and options to avoid conflicts with WP-Varnish,
+* plugins name is now varnish-purger
+
 
 ### 0.9
 * refactorisation of core for extensions

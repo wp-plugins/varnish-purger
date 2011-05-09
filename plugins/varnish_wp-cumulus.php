@@ -4,16 +4,16 @@
  * Url http://www.roytanck.com/2008/03/06/wordpress-plugin-wp-cumulus-flash-based-tag-cloud/
  * Version 1.23
  */
-class WPVarnish_WPCumulus extends WPVarnishCore {
+class WPVarnishPurger_WPCumulus extends WPVarnishPurgerCore {
    
    function mustActivate(){
       return $this->is_plugin_active('wp-cumulus/wp-cumulus'); 
    }      
   
    function addActions(){      
-        add_action('wpcumulus_widget', array(&$this, 'WPVarnishPurgeAll'), 99);     
+        add_action('wpcumulus_widget', array(&$this, 'WPVarnishPurgerPurgeAll'), 99);     
    }
    
 }
-$wpvarnishCumulus = & new WPVarnish_WPCumulus();
+$WPVarnishPurgerCumulus = & new WPVarnishPurger_WPCumulus();
 

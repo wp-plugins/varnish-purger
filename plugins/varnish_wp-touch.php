@@ -6,23 +6,23 @@
  */
 
 
-class WPVarnish_WPTouch extends WPVarnishAbstract {
+class WPVarnishPurger_WPTouch extends WPVarnishPurgerAbstract {
    
    function mustActivate(){
       return $this->is_plugin_active('wptouch/wptouch.php');       
    }
      
    function addActions(){
-      remove_all_actions( 'wpvarnish_purgeobject',99);
-      add_action('wpvarnish_purgeobject', array(&$this, 'WPtouchPurgeObject'), 99);             
+      remove_all_actions( 'WPVarnishPurger_purgeobject',99);
+      add_action('WPVarnishPurger_purgeobject', array(&$this, 'WPtouchPurgeObject'), 99);             
    }
    
    // We need to purge the normal and the mobile version of the page
    function WPtouchPurgeObject($wpv_url){      
       foreach (array('Android','Windows NT 6.0') as $useragent){
-         $this->_WPVarnishPurgeObject($wpv_url,$useragent);
+         $this->_WPVarnishPurgerPurgeObject($wpv_url,$useragent);
       }
    }
 }
 
-$wpvarnishWPTouch = & new WPVarnish_WPTouch();
+$WPVarnishPurgerWPTouch = & new WPVarnishPurger_WPTouch();

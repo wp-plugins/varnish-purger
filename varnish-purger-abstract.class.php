@@ -3,7 +3,7 @@
 /*
  * Abstract- class containing method related to varnish purging only 
  */
-class WPVarnishAbstract {
+class WPVarnishPurgerAbstract {
   public $wpv_addr_optname;
   public $wpv_port_optname;
   public $wpv_secret_optname;
@@ -11,16 +11,16 @@ class WPVarnishAbstract {
   public $wpv_update_pagenavi_optname;
   public $wpv_update_commentnavi_optname;
     
-  function WPVarnishAbstract() {
+  function WPVarnishPurgerAbstract() {
     global $post;
 
-    $this->wpv_addr_optname = "wpvarnish_addr";
-    $this->wpv_port_optname = "wpvarnish_port";
-    $this->wpv_secret_optname = "wpvarnish_secret";
-    $this->wpv_timeout_optname = "wpvarnish_timeout";
-    $this->wpv_update_pagenavi_optname = "wpvarnish_update_pagenavi";
-    $this->wpv_update_commentnavi_optname = "wpvarnish_update_commentnavi";
-    $this->wpv_use_adminport_optname = "wpvarnish_use_adminport";
+    $this->wpv_addr_optname = "WPVarnishPurger_addr";
+    $this->wpv_port_optname = "WPVarnishPurger_port";
+    $this->wpv_secret_optname = "WPVarnishPurger_secret";
+    $this->wpv_timeout_optname = "WPVarnishPurger_timeout";
+    $this->wpv_update_pagenavi_optname = "WPVarnishPurger_update_pagenavi";
+    $this->wpv_update_commentnavi_optname = "WPVarnishPurger_update_commentnavi";
+    $this->wpv_use_adminport_optname = "WPVarnishPurger_use_adminport";
     
     $wpv_addr_optval = array ("127.0.0.1");
     $wpv_port_optval = array (80);
@@ -30,24 +30,24 @@ class WPVarnishAbstract {
     $wpv_update_commentnavi_optval = 0;
     $wpv_use_adminport_optval = 0;
     
-    add_action('wpvarnish_purgeobject',array($this,'_WPVarnishPurgeObject'),99);
+    add_action('WPVarnishPurger_purgeobject',array($this,'_WPVarnishPurgerPurgeObject'),99);
     add_action('plugins_loaded', array(&$this, 'activateExtension'), 99);
             
   }
   
-  // Wrapper for _WPVarnishPurgeObject to be able to overload it
-  function WPVarnishPurgeObject($wpv_url) {
-     do_action('wpvarnish_purgeobject',$wpv_url,null);         
+  // Wrapper for _WPVarnishPurgerPurgeObject to be able to overload it
+  function WPVarnishPurgerPurgeObject($wpv_url) {
+     do_action('WPVarnishPurger_purgeobject',$wpv_url,null);         
   }  
-  // WPVarnishPurgeObject - Takes a location as an argument and purges this object
+  // WPVarnishPurgerPurgeObject - Takes a location as an argument and purges this object
   // from the varnish cache.
-  function _WPVarnishPurgeObject($wpv_url,$useragent=null) {
+  function _WPVarnishPurgerPurgeObject($wpv_url,$useragent=null) {
     global $varnish_servers;
     // list of urls already purged
-    global $wpvarnish_url_purged;
+    global $WPVarnishPurger_url_purged;
 
     // if url already purged or purgeAll already sent
-    if (in_array($wpv_url.$useragent,$wpvarnish_url_purged)){   
+    if (in_array($wpv_url.$useragent,$WPVarnishPurger_url_purged)){   
        return;
     }
     
@@ -105,7 +105,7 @@ class WPVarnishAbstract {
       fclose($varnish_sock);
     }
     // store url as purged
-       $wpvarnish_url_purged[]=$wpv_url.$useragent;
+       $WPVarnishPurger_url_purged[]=$wpv_url.$useragent;
 
     
   }
@@ -123,7 +123,7 @@ class WPVarnishAbstract {
   }
   
   function activateExtension(){
-      global $wpvarnish_extension_activated;  
+      global $WPVarnishPurger_extension_activated;  
       if ($this->mustActivate()){         
          $this->addActions();
       } 

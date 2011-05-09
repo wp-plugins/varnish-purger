@@ -3,7 +3,7 @@ Contributors: Olivier Dupuis
 Tags: cache, caching, performance, varnish, purge, speed, plugins support
 Requires at least: 2.9.2
 Tested up to: 3.1.1
-Stable tag: 0.9
+Stable tag: 0.91
 Fork of wp-varnish : http://github.com/pkhamre/wp-varnish
 
 
@@ -64,11 +64,16 @@ users who access the plugin configuration page (but they can't edit it).
 (@TODO : add some)
 
 == Upgrade Notice ==
+* 0.91 : deactivate v0.9 on network, then uninstall the plugins. Then install 0.91 from scratch. This is due to intense renaming to avoid conflicts with original WP-Varnish plugin.
 * 0.9: initial release, deactivate WP-Varnish
 
 == Donate ==
 
 == Changelog ==
+
+= 0.91 =
+* rename classes, files and options to avoid conflicts with WP-Varnish,
+* plugins name is now varnish-purger
 
 = 0.9 =
 * refactorisation of core for extensions
