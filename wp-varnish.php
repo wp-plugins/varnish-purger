@@ -3,7 +3,7 @@
 Plugin Name: WordPress Varnish Purger
 Plugin URI: https://github.com/ojdupuis/wp-varnish/tree/Support_Extensions
 Version: 0.9
-Author: <a href="http://github.com/ojdupuis/">Olivier Dupuis</a>
+Author: <a href="http://github.com/ojdupuis/">Olivier Dupuis</a> for Le Monde interactif
 Description: A plugin for purging Varnish cache when content is published or edited. Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for extensibility.
 
 Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for extensibility.
