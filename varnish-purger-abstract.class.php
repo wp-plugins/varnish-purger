@@ -50,13 +50,13 @@ class WPVarnishPurgerAbstract {
           $wpv_purgeport[] = $port;
        }
     } else {
-       $wpv_purgeaddr = get_option($this->wpv_addr_optname);
-       $wpv_purgeport = get_option($this->wpv_port_optname);
-       $wpv_secret = get_option($this->wpv_secret_optname);
+       $wpv_purgeaddr = get_site_option($this->wpv_addr_optname);
+       $wpv_purgeport = get_site_option($this->wpv_port_optname);
+       $wpv_secret = get_site_option($this->wpv_secret_optname);
     }
 
-    $wpv_timeout = get_option($this->wpv_timeout_optname);
-    $wpv_use_adminport = get_option($this->wpv_use_adminport_optname);
+    $wpv_timeout = get_site_option($this->wpv_timeout_optname);
+    $wpv_use_adminport = get_site_option($this->wpv_use_adminport_optname);
 
     $wpv_wpurl = get_bloginfo('wpurl');
     $wpv_replace_wpurl = '/^http:\/\/([^\/]+)(.*)/i';

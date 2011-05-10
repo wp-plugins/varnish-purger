@@ -2,7 +2,7 @@
 /*
 Plugin Name: WordPress Varnish Purger
 Plugin URI: https://github.com/ojdupuis/wp-varnish/tree/Support_Extensions
-Version: 0.92
+Version: 0.91
 Author: <a href="http://github.com/ojdupuis/">Olivier Dupuis</a> for Le Monde interactif
 Description: A plugin for purging Varnish cache when content is published or edited. Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for extensibility.
 
@@ -56,32 +56,32 @@ class WPVarnishPurger {
     $wpv_update_commentnavi_optval = 0;
     $wpv_use_adminport_optval = 0;
     
-    if ( (get_option($this->wpv_addr_optname) == FALSE) ) {
-      add_option($this->wpv_addr_optname, $wpv_addr_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_addr_optname) == FALSE) ) {
+      add_site_option($this->wpv_addr_optname, $wpv_addr_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_port_optname) == FALSE) ) {
-      add_option($this->wpv_port_optname, $wpv_port_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_port_optname) == FALSE) ) {
+      add_site_option($this->wpv_port_optname, $wpv_port_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_secret_optname) == FALSE) ) {
-      add_option($this->wpv_secret_optname, $wpv_secret_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_secret_optname) == FALSE) ) {
+      add_site_option($this->wpv_secret_optname, $wpv_secret_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_timeout_optname) == FALSE) ) {
-      add_option($this->wpv_timeout_optname, $wpv_timeout_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_timeout_optname) == FALSE) ) {
+      add_site_option($this->wpv_timeout_optname, $wpv_timeout_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_update_pagenavi_optname) == FALSE) ) {
-      add_option($this->wpv_update_pagenavi_optname, $wpv_update_pagenavi_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_update_pagenavi_optname) == FALSE) ) {
+      add_site_option($this->wpv_update_pagenavi_optname, $wpv_update_pagenavi_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_update_commentnavi_optname) == FALSE) ) {
-      add_option($this->wpv_update_commentnavi_optname, $wpv_update_commentnavi_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_update_commentnavi_optname) == FALSE) ) {
+      add_site_option($this->wpv_update_commentnavi_optname, $wpv_update_commentnavi_optval, '', 'yes');
     }
 
-    if ( (get_option($this->wpv_use_adminport_optname) == FALSE) ) {
-      add_option($this->wpv_use_adminport_optname, $wpv_use_adminport_optval, '', 'yes');
+    if ( (get_site_option($this->wpv_use_adminport_optname) == FALSE) ) {
+      add_site_option($this->wpv_use_adminport_optname, $wpv_use_adminport_optval, '', 'yes');
     }
       
     
@@ -101,7 +101,7 @@ class WPVarnishPurger {
     $this->WPVarnishPurgerPurgeObject("/feed/atom/");    
 
     // Also purges page navigation
-    if (get_option($this->wpv_update_pagenavi_optname) == 1) {
+    if (add_site_option($this->wpv_update_pagenavi_optname) == 1) {
        $this->WPVarnishPurgerPurgeObject("/page/(.*)");
     }
   }
@@ -133,7 +133,7 @@ class WPVarnishPurger {
        $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid);
 
        // Also purges comments navigation
-       if (get_option($this->wpv_update_commentnavi_optname) == 1) {
+       if (add_site_option($this->wpv_update_commentnavi_optname) == 1) {
           $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid . '&(.*)');
        }
 
@@ -227,40 +227,40 @@ class WPVarnishPurger {
           if (isset($_POST['WPVarnishPurger_admin'])) {
              if (!empty($_POST["$this->wpv_addr_optname"])) {
                 $wpv_addr_optval = $_POST["$this->wpv_addr_optname"];
-                update_option($this->wpv_addr_optname, $wpv_addr_optval);
+                update_site_option($this->wpv_addr_optname, $wpv_addr_optval);
              }
 
              if (!empty($_POST["$this->wpv_port_optname"])) {
                 $wpv_port_optval = $_POST["$this->wpv_port_optname"];
-                update_option($this->wpv_port_optname, $wpv_port_optval);
+                update_site_option($this->wpv_port_optname, $wpv_port_optval);
              }
 
              if (!empty($_POST["$this->wpv_secret_optname"])) {
                 $wpv_secret_optval = $_POST["$this->wpv_secret_optname"];
-                update_option($this->wpv_secret_optname, $wpv_secret_optval);
+                update_site_option($this->wpv_secret_optname, $wpv_secret_optval);
              }
 
              if (!empty($_POST["$this->wpv_timeout_optname"])) {
                 $wpv_timeout_optval = $_POST["$this->wpv_timeout_optname"];
-                update_option($this->wpv_timeout_optname, $wpv_timeout_optval);
+                update_site_option($this->wpv_timeout_optname, $wpv_timeout_optval);
              }
 
              if (!empty($_POST["$this->wpv_update_pagenavi_optname"])) {
-                update_option($this->wpv_update_pagenavi_optname, 1);
+                update_site_option($this->wpv_update_pagenavi_optname, 1);
              } else {
-                update_option($this->wpv_update_pagenavi_optname, 0);
+                update_site_option($this->wpv_update_pagenavi_optname, 0);
              }
 
              if (!empty($_POST["$this->wpv_update_commentnavi_optname"])) {
-                update_option($this->wpv_update_commentnavi_optname, 1);
+                update_site_option($this->wpv_update_commentnavi_optname, 1);
              } else {
-                update_option($this->wpv_update_commentnavi_optname, 0);
+                update_site_option($this->wpv_update_commentnavi_optname, 0);
              }
 
              if (!empty($_POST["$this->wpv_use_adminport_optname"])) {
-                update_option($this->wpv_use_adminport_optname, 1);
+                update_site_option($this->wpv_use_adminport_optname, 1);
              } else {
-                update_option($this->wpv_use_adminport_optname, 0);
+                update_site_option($this->wpv_use_adminport_optname, 0);
              }
           }
 
@@ -273,15 +273,16 @@ class WPVarnishPurger {
        }
     }
 
-         $wpv_timeout_optval = get_option($this->wpv_timeout_optname);
-         $wpv_update_pagenavi_optval = get_option($this->wpv_update_pagenavi_optname);
-         $wpv_update_commentnavi_optval = get_option($this->wpv_update_commentnavi_optname);
-         $wpv_use_adminport_optval = get_option($this->wpv_use_adminport_optname);
+         $wpv_timeout_optval = get_site_option($this->wpv_timeout_optname);
+         $wpv_update_pagenavi_optval = get_site_option($this->wpv_update_pagenavi_optname);
+         $wpv_update_commentnavi_optval = get_site_option($this->wpv_update_commentnavi_optname);
+         $wpv_use_adminport_optval = get_site_option($this->wpv_use_adminport_optname);
     ?>
     <div class="wrap">
-      <script type="text/javascript" src="<?php echo get_option('siteurl'); ?>/wp-content/plugins/varnish-purger/varnish-purger.js"></script>
+      <script type="text/javascript" src="<?php echo add_site_option('siteurl'); ?>/wp-content/plugins/varnish-purger/varnish-purger.js"></script>
       <h2><?php echo __("WordPress Varnish Purger Administration",'wp-varnish-purger'); ?></h2>
       <h3><?php echo __("IP address and port configuration",'wp-varnish-purger'); ?></h3>
+      <h3><?php echo __("WARNING : those settings are nework-wide if multi-site",'wp-varnish-purger'); ?></h3>
       <form method="POST" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
     <?php
           // Can't be edited - already defined in wp-config.php
@@ -310,9 +311,9 @@ class WPVarnishPurger {
         </tr>
         <script>
         <?php
-          $addrs = get_option($this->wpv_addr_optname);
-          $ports = get_option($this->wpv_port_optname);
-          $secrets = get_option($this->wpv_secret_optname);
+          $addrs = get_site_option($this->wpv_addr_optname);
+          $ports = get_site_option($this->wpv_port_optname);
+          $secrets = get_site_option($this->wpv_secret_optname);
           echo "rowCount = $i\n";
           for ($i = 0; $i < count ($addrs); $i++) {
              // let's center the row creation in one spot, in javascript
@@ -340,8 +341,9 @@ class WPVarnishPurger {
       <p><input type="checkbox" name="WPVarnishPurger_update_commentnavi" value="1" <?php if ($wpv_update_commentnavi_optval == 1) echo 'checked '?>/> <?php echo __("Also purge all comment navigation (experimental, use carefully, it will include a bit more load on varnish servers.)",'wp-varnish-purger'); ?></p>
 
       <p class="submit"><input type="submit" class="button-primary" name="WPVarnishPurger_admin" value="<?php echo __("Save Changes",'wp-varnish-purger'); ?>" /></p>
-
-      <p class="submit"><input type="submit" class="button-primary" name="WPVarnishPurger_clear_blog_cache" value="<?php echo __("Purge All Blog Cache",'wp-varnish-purger'); ?>" /> <?php echo __("Use only if necessary, and carefully as this will include a bit more load on varnish servers.",'wp-varnish-purger'); ?></p>
+      <p> <h3>For the current blog only:</h3></p>
+      <p class="submit"><input type="submit" class="button-primary" name="WPVarnishPurger_clear_blog_cache" value="<?php echo __("Purge this blog's cache",'wp-varnish-purger'); ?>" /> <?php echo __("Use only if necessary, and carefully as this will include a bit more load on varnish servers.",'wp-varnish-purger'); ?></p>
+      
       </form>
     </div>
   <?php

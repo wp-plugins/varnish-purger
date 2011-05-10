@@ -76,7 +76,7 @@ class WPVarnishPurgerCore extends WPVarnishPurgerAbstract{
        $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid);
 
        // Also purges comments navigation
-       if (get_option($this->wpv_update_commentnavi_optname) == 1) {
+       if (get_site_option($this->wpv_update_commentnavi_optname) == 1) {
           $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid . '&(.*)');
        }
 
@@ -162,7 +162,7 @@ class WPVarnishPurgerCore extends WPVarnishPurgerAbstract{
     $this->WPVarnishPurgerPurgeObject("/feed/atom/");    
 
     // Also purges page navigation
-    if (get_option($this->wpv_update_pagenavi_optname) == 1) {
+    if (get_site_option($this->wpv_update_pagenavi_optname) == 1) {
        $this->WPVarnishPurgerPurgeObject("/page/(.*)");
     }
   }
