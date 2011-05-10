@@ -20,15 +20,7 @@ class WPVarnishPurgerAbstract {
     $this->wpv_timeout_optname = "WPVarnishPurger_timeout";
     $this->wpv_update_pagenavi_optname = "WPVarnishPurger_update_pagenavi";
     $this->wpv_update_commentnavi_optname = "WPVarnishPurger_update_commentnavi";
-    $this->wpv_use_adminport_optname = "WPVarnishPurger_use_adminport";
-    
-    $wpv_addr_optval = array ("127.0.0.1");
-    $wpv_port_optval = array (80);
-    $wpv_secret_optval = array ("");
-    $wpv_timeout_optval = 5;
-    $wpv_update_pagenavi_optval = 0;
-    $wpv_update_commentnavi_optval = 0;
-    $wpv_use_adminport_optval = 0;
+    $this->wpv_use_adminport_optname = "WPVarnishPurger_use_adminport";       
     
     add_action('WPVarnishPurger_purgeobject',array($this,'_WPVarnishPurgerPurgeObject'),99);
     add_action('plugins_loaded', array(&$this, 'activateExtension'), 99);

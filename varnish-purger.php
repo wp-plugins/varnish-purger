@@ -48,6 +48,14 @@ class WPVarnishPurger {
     $this->wpv_update_commentnavi_optname = "WPVarnishPurger_update_commentnavi";
     $this->wpv_use_adminport_optname = "WPVarnishPurger_use_adminport";
     
+    $wpv_addr_optval = array ("127.0.0.1");
+    $wpv_port_optval = array (80);
+    $wpv_secret_optval = array ("");
+    $wpv_timeout_optval = 5;
+    $wpv_update_pagenavi_optval = 0;
+    $wpv_update_commentnavi_optval = 0;
+    $wpv_use_adminport_optval = 0;
+    
     if ( (get_option($this->wpv_addr_optname) == FALSE) ) {
       add_option($this->wpv_addr_optname, $wpv_addr_optval, '', 'yes');
     }
