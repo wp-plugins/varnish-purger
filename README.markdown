@@ -16,6 +16,7 @@ Description
 -----------
 
 This plugin purges your varnish cache it's intent is do do it for any action taken. This plugin supports what is called extensions that can be added to add special purges for specific wordpress plugins
+This plugins is mainly aimed at multi-sites installations (but can be used on a mono site installation) and requires some knowledge about varnish and vcl files.
  
 Installation (@TODO add details about varnish vcl)
 ------------
@@ -24,10 +25,14 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `wp-varnish/` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. use the vcl provided to configure your varnish instance
+3. a wordpress.vcl is provided, it contains directives for wordpresse's core. Modify it according to your platform/needs.
+4. few extensions have additionnal vcl needs (such as wp-touch for useragent normalization), those files are located in the plugins directory. Additionnal informations are provided with those files.
 
 Frequently Asked Questions 
 --------------------------
+
+### When will be V1.0 be relased
+This plugin will be in fully tested V1.0 by end of may 2011.
 
 ### Does this just work?
 
