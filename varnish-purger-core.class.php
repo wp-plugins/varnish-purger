@@ -1,4 +1,5 @@
 <?php
+require_once('varnish-purger-abstract.class.php');
 
 class WPVarnishPurgerCore extends WPVarnishPurgerAbstract{
    

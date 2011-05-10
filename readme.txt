@@ -39,7 +39,8 @@ This plugin will be in fully tested V1.0 by end of may 2011.
 
 = Does this just work? =
 
-Yes.
+Yes. Exdtensivly tested in multi-site with sub-domain install. But has to be
+tested in non sub-domain (site.com/blogname)
 
 = But how should my varnish configuration file look like? =
 
@@ -71,6 +72,7 @@ users who access the plugin configuration page (but they can't edit it).
 (@TODO : add some)
 
 == Upgrade Notice ==
+* 0.93: configuration has become network wide, reconfigure it after upgrade via admin menu of the site
 * 0.92 : Regression after renaming : default parameters where incorrectly set.
 * if update from 0.92, just a normal update
 * 0.91 : deactivate v0.9 on network, then uninstall the plugins. Then install 0.91 from scratch. This is due to intense renaming to avoid conflicts with original WP-Varnish plugin.
@@ -79,6 +81,13 @@ users who access the plugin configuration page (but they can't edit it).
 == Donate ==
 
 == Changelog ==
+
+= 0.93 =
+* Varnish configuration is now sitewide.
+* refactor a bit the admin page (only shown to network admin)
+* by default purge page and comment navigation
+* Tidy up a bit, unused methods in main plugin object. this object has no method for purging anymore. Call to purge all blog in admin section didn t work.
+* Corrected a bug in js that prevented servers to be configured via admin section  thanks ovidiubica.
 
 = 0.92 = 
 * correct regression after renaming : default parameters where incorrectly set

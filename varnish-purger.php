@@ -2,7 +2,7 @@
 /*
 Plugin Name: WordPress Varnish Purger
 Plugin URI: https://github.com/ojdupuis/wp-varnish/tree/Support_Extensions
-Version: 0.91
+Version: 0.93
 Author: <a href="http://github.com/ojdupuis/">Olivier Dupuis</a> for Le Monde interactif
 Description: A plugin for purging Varnish cache when content is published or edited. Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for extensibility.
 
@@ -19,7 +19,7 @@ This plugin supports what is called extensions that can be added to add special 
 $WPVarnishPurger_url_purged=array();
 $WPVarnishPurger_extension_activated=array();
 
-require_once('varnish-purger-abstract.class.php');
+require_once('varnish-purger-core.class.php');
 
 
 class WPVarnishPurger {
@@ -52,8 +52,8 @@ class WPVarnishPurger {
     $wpv_port_optval = array (80);
     $wpv_secret_optval = array ("");
     $wpv_timeout_optval = 5;
-    $wpv_update_pagenavi_optval = 0;
-    $wpv_update_commentnavi_optval = 0;
+    $wpv_update_pagenavi_optval = 1;
+    $wpv_update_commentnavi_optval = 1;
     $wpv_use_adminport_optval = 0;
     
     if ( (get_site_option($this->wpv_addr_optname) == FALSE) ) {
@@ -88,131 +88,10 @@ class WPVarnishPurger {
       
         
   }
-  
-  
-
+ 
   function WPVarnishPurgerLocalization() {
     load_plugin_textdomain('varnishpurger',false,'varnishpurger/lang');
   }
-
-  function WPVarnishPurgerPurgeCommonObjects() {
-    $this->WPVarnishPurgerPurgeObject("/");
-    $this->WPVarnishPurgerPurgeObject("/feed/");
-    $this->WPVarnishPurgerPurgeObject("/feed/atom/");    
-
-    // Also purges page navigation
-    if (add_site_option($this->wpv_update_pagenavi_optname) == 1) {
-       $this->WPVarnishPurgerPurgeObject("/page/(.*)");
-    }
-  }
-
-  // WPVarnishPurgerPurgeAll - Using a regex, clear all blog cache. Use carefully.
-  function WPVarnishPurgerPurgeAll() {
-    $this->WPVarnishPurgerPurgeObject('/(.*)');
-  }
-
-  // WPVarnishPurgerPurgePost - Takes a post id (number) as an argument and generates
-  // the location path to the object that will be purged based on the permalink.
-  function WPVarnishPurgerPurgePost($wpv_postid) {
-    $wpv_url = get_permalink($wpv_postid);
-    $wpv_permalink = str_replace(get_bloginfo('wpurl'),"",$wpv_url);
-
-    $this->WPVarnishPurgerPurgeObject($wpv_permalink);
-  }
-
-  // WPVarnishPurgerPurgePostComments - Purge all comments pages from a post
-  function WPVarnishPurgerPurgePostComments($wpv_commentid) {
-    $comment = get_comment($wpv_commentid);
-    $wpv_commentapproved = $comment->comment_approved;
-
-    // If approved or deleting...
-    if ($wpv_commentapproved == 1 || $wpv_commentapproved == 'trash') {
-       $wpv_postid = $comment->comment_post_ID;
-
-       // Popup comments
-       $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid);
-
-       // Also purges comments navigation
-       if (add_site_option($this->wpv_update_commentnavi_optname) == 1) {
-          $this->WPVarnishPurgerPurgeObject('/\\\?comments_popup=' . $wpv_postid . '&(.*)');
-       }
-
-    }
-  }
-  /*
-   * All purge orders to be sent when a post is modified
-   */
-  function WPVarnishPurgerPurgePostDependencies($wpv_postid){
-     $this->WPVarnishPurgerPurgeCommonObjects($wpv_postid);
-     //Purge categories
-     $this->WPVarnishPurgerPurgeCategories($wpv_postid);
-     // Purges Archives
-     $this->WPVarnishPurgerPurgeArchives($wpv_postid);
-     //Purge Tags
-     $this->WPVarnishPurgerPurgeTags($wpv_postid);
-    
-
-  }  
-  
-  // Purge category pages for a post
-  function WPVarnishPurgerPurgeCategories($wpv_postid){
-    $list=get_the_category($wpv_postid);
-    foreach($list as $categoryObject){
-       $this->WPVarnishPurgerPurgeCategory($categoryObject->cat_ID);
-    }
-  }
-  
-  // Purge a specific post category
-  function WPVarnishPurgerPurgeCategory($catid){
-     if (  is_active_widget(false,false,'categories') ){
-        $this->WPVarnishPurgerPurgeAll();
-     } else {
-        $this->WPVarnishPurgerPurgeObject(str_replace(get_bloginfo('wpurl'),"",get_category_link($catid)));   
-     }                    
-  }
-
-  // Purge a specific link category
-  function WPVarnishPurgerPurgeLinkCategory($catid){
-     if (is_active_widget(false,false,'links')){
-        $this->WPVarnishPurgerPurgeAll();
-     }
-  }
-  
-  // Purge a specific post tag
-  function WPVarnishPurgerPurgeTagCategory($catid){
-        $this->WPVarnishPurgerPurgeObject(str_replace(get_bloginfo('wpurl'),"",get_tag_link($catid)));                       
-  }
-  
-    // Purge tag pages for a post
-  function WPVarnishPurgerPurgeTags($wpv_postid){
-    $list=get_the_tags($wpv_postid);
-    
-    foreach($list as $tagObject){
-       $this->WPVarnishPurgerPurgeTagCategory($tagObject->term_id);
-    }
-  }
-  
-  // Purge archives pages for a post
-  function WPVarnishPurgerPurgeArchives($wpv_postid){
-    $day=str_replace(get_bloginfo('wpurl'),"",get_day_link(get_post_time('Y',false,$wpv_postid), get_post_time('m',true,$wpv_postid),get_post_time('d',true,$wpv_postid)));
-    $month=str_replace(get_bloginfo('wpurl'),"",get_month_link(get_post_time('Y',false,$wpv_postid), get_post_time('m',true,$wpv_postid)));
-    $year=str_replace(get_bloginfo('wpurl'),"",get_year_link(get_post_time('Y',false,$wpv_postid)));
-
-    $this->WPVarnishPurgerPurgeObject($day);
-    $this->WPVarnishPurgerPurgeObject($month);
-    $this->WPVarnishPurgerPurgeObject($year);
-
-  }
-
- 
-  // Purge when links modified/edited/deleted
-  function WPVarnishPurgerPurgeLink($linkId){
-     // Purge all blog if widget links used in any sidebar
-     if (  is_active_widget(false,false,'links')){
-        $this->WPVarnishPurgerPurgeAll();      
-     }
-  }
-  
 
   function VarnishPurgerAdminMenu() {
     if (!defined('VARNISH_HIDE_ADMINMENU')||(is_site_admin())) {
@@ -264,8 +143,12 @@ class WPVarnishPurger {
              }
           }
 
-          if (isset($_POST['WPVarnishPurger_clear_blog_cache']))
-             $this->WPVarnishPurgerPurgeAll();
+          if (isset($_POST['WPVarnishPurger_clear_blog_cache'])){
+             $varnishcore=new WPVarnishPurgerCore();
+             $varnishcore->WPVarnishPurgerPurgeAll();
+             unset($varnishcore);
+          }
+             
 
           ?><div class="updated"><p><?php echo __('Settings Saved!','wp-varnish-purger' ); ?></p></div><?php
        } else {
@@ -336,9 +219,9 @@ class WPVarnishPurger {
 
       <p><input type="checkbox" name="WPVarnishPurger_use_adminport" value="1" <?php if ($wpv_use_adminport_optval == 1) echo 'checked '?>/> <?php echo __("Use admin port instead of PURGE method.",'wp-varnish-purger'); ?></p>
 
-      <p><input type="checkbox" name="WPVarnishPurger_update_pagenavi" value="1" <?php if ($wpv_update_pagenavi_optval == 1) echo 'checked '?>/> <?php echo __("Also purge all page navigation (experimental, use carefully, it will include a bit more load on varnish servers.)",'wp-varnish-purger'); ?></p>
+      <p><input type="checkbox" name="WPVarnishPurger_update_pagenavi" value="1" <?php if ($wpv_update_pagenavi_optval == 1) echo 'checked '?>/> <?php echo __("Also purge all page navigation (it will include a bit more load on varnish servers.)",'wp-varnish-purger'); ?></p>
 
-      <p><input type="checkbox" name="WPVarnishPurger_update_commentnavi" value="1" <?php if ($wpv_update_commentnavi_optval == 1) echo 'checked '?>/> <?php echo __("Also purge all comment navigation (experimental, use carefully, it will include a bit more load on varnish servers.)",'wp-varnish-purger'); ?></p>
+      <p><input type="checkbox" name="WPVarnishPurger_update_commentnavi" value="1" <?php if ($wpv_update_commentnavi_optval == 1) echo 'checked '?>/> <?php echo __("Also purge all comment navigation (it will include a bit more load on varnish servers.)",'wp-varnish-purger'); ?></p>
 
       <p class="submit"><input type="submit" class="button-primary" name="WPVarnishPurger_admin" value="<?php echo __("Save Changes",'wp-varnish-purger'); ?>" /></p>
       <p> <h3>For the current blog only:</h3></p>
