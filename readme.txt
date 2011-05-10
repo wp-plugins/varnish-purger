@@ -80,6 +80,9 @@ users who access the plugin configuration page (but they can't edit it).
 
 == Changelog ==
 
+= 0.92 = 
+* correct regression after renaming : default parameters where incorrectly set
+
 = 0.91 =
 * rename classes, files and options to avoid conflicts with WP-Varnish,
 * plugins name is now varnish-purger
