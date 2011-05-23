@@ -13,6 +13,8 @@ class WPVarnishPurgerCore extends WPVarnishPurgerAbstract{
     // When posts/pages are published, edited or deleted
     add_action('edit_post', array(&$this, 'WPVarnishPurgerPurgePost'), 99);
     add_action('edit_post', array(&$this, 'WPVarnishPurgerPurgePostDependencies'), 99);
+    add_action('edit_post', array(&$this, 'WPVarnishPurgerPurgePostDependencies'), 99);
+    add_action('transition_post_status', array(&$this,'WPVarnishPurgerPurgePostStatus'),99);
 
     // When comments are made, edited or deleted
     add_action('comment_post', array(&$this, 'WPVarnishPurgerPurgePostComments'),99);
@@ -62,6 +64,12 @@ class WPVarnishPurgerCore extends WPVarnishPurgerAbstract{
     $wpv_permalink = str_replace(get_bloginfo('wpurl'),"",$wpv_url);
 
     $this->WPVarnishPurgerPurgeObject($wpv_permalink);
+  }
+
+  // WPVarnishPurgerPurgePostStatus - input based on http://core.trac.wordpress.org/browser/trunk/wp-includes/post.php#L4461   
+  function WPVarnishPurgerPurgePostStatus($new_status, $old_status, $post)  {
+    $this->WPVarnishPurgerPurgePost($post->ID);
+    $this->WPVarnishPurgerPurgePostDependencies($post->ID);
   }
 
   // WPVarnishPurgerPurgePostComments - Purge all comments pages from a post
