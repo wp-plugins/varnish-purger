@@ -3,7 +3,7 @@ Contributors: Olivier Dupuis
 Tags: cache, caching, performance, varnish, purge, speed, plugins support
 Requires at least: 2.9.2
 Tested up to: 3.1.1
-Stable tag: 0.92
+Stable tag: 0.94
 Fork of wp-varnish : http://github.com/pkhamre/wp-varnish
 
 
@@ -81,6 +81,9 @@ users who access the plugin configuration page (but they can't edit it).
 == Donate ==
 
 == Changelog ==
+
+= 0.94
+* Add purge order when post status is modified.
 
 = 0.93 =
 * Varnish configuration is now sitewide.

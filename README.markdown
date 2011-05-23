@@ -7,7 +7,7 @@ Based on Varsnish plugins by pkhamre, wfelipe, eitch, but heavily forked for ext
 * Tags: cache, caching, performance, varnish, purge, speed, plugins support
 * Requires at least: 2.9.2
 * Tested up to: 3.1.1
-* Stable tag: 0.92
+* Stable tag: 0.94
 * Fork of wp-varnish : http://github.com/pkhamre/wp-varnish
 
 WordPress VarnishMia is a plugin that purges new and edited content, it's intent is to be usable for a multi-site installation, to support all necessary purge orders for wordpress and to be expandable via extensions.
@@ -72,6 +72,9 @@ Upgrade Notice
 
 Changelog
 ---------
+### 0.94 ###
+* Add purge order when post status is modified.
+
 ### 0.93 ###
 * Varnish configuration is now sitewide.
 * refactor a bit the admin page (only shown to network admin)
