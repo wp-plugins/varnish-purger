@@ -74,6 +74,7 @@ Changelog
 ---------
 ### 0.94 ###
 * Add purge order when post status is modified.
+* test existence of main object to avoid fatal error.
 
 ### 0.93 ###
 * Varnish configuration is now sitewide.
